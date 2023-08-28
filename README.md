@@ -1,16 +1,35 @@
-# todo
+# Simple To-Do App Documentation
 
-A new Flutter project.
+Welcome to the Simple To-Do App documentation! This app allows you to manage your tasks easily.
 
-## Getting Started
+## Adding a New To-Do
 
-This project is a starting point for a Flutter application.
+To add a new to-do to your list, follow these steps:
 
-A few resources to get you started if this is your first Flutter project:
+1. Open the app.
+2. Look for the Floating action button and click on it.
+3. A text field will appear. Type in your new to-do task.
+4. Press the "Add" button or hit Enter to add the task to your to-do list.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Marking a To-Do as Completed
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Once you've completed a task, you can mark it as completed:
+
+1. Find the to-do you want to mark as completed in the list.
+2. Next to the task, you'll see a checkbox or an option to mark it as completed.
+3. Click the checkbox or select the option to mark the task as completed.
+
+## Viewing Completed To-Dos
+
+To view the number of completed to-dos out of the total, follow these steps:
+
+1. Navigate to the main screen of the app.
+2. You'll see a section that shows the count of completed to-dos.
+3. The total number of completed to-dos and the total number of to-dos will be displayed.
+
+## Screenshots
+
+Here are some screenshots of the Simple To-Do App interface:
+
+![Adding a New To-Do]('./assets/screenshots/add_todo.png')
+![Marking a To-Do as Completed]('./assets/screenshots/todo_screen.png')
