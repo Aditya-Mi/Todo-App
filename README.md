@@ -27,6 +27,10 @@ To view the number of completed to-dos out of the total, follow these steps:
 2. You'll see a section that shows the count of completed to-dos.
 3. The total number of completed to-dos and the total number of to-dos will be displayed.
 
+## Important
+1. Add functionality to priority of todos
+2. make add todo screen Ui better 
+
 ## Screenshots
 
 Here are some screenshots of the Simple To-Do App interface:
