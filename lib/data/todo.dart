@@ -1,19 +1,28 @@
 import 'package:hive/hive.dart';
+import 'package:uuid/uuid.dart';
 
 part 'todo.g.dart';
 
 @HiveType(typeId: 2)
 class Todo {
   @HiveField(0)
+  String id;
+
+  @HiveField(1)
   String task;
 
-  @HiveField(1, defaultValue: false)
+  @HiveField(2, defaultValue: false)
   bool isCompleted;
 
-  @HiveField(2)
+  @HiveField(3)
   Priority priority;
 
-  Todo({required this.task, required this.isCompleted, required this.priority});
+  Todo(
+      {String? id,
+      required this.task,
+      required this.isCompleted,
+      required this.priority})
+      : id = id ?? const Uuid().v4();
 }
 
 const priorityString = <Priority, String>{

@@ -39,17 +39,23 @@ class _AddTodoState extends State<AddTodo> {
       appBar: AppBar(
         title: const Text('Add Todo'),
       ),
-      body: Column(
-        children: [
-          TextField(
-            controller: _controller,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Add a new task',
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        width: double.infinity,
+        child: Column(
+          children: [
+            const Spacer(),
+            TextField(
+              controller: _controller,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Add a new task',
+              ),
             ),
-          ),
-          Expanded(
-            child: Row(
+            const SizedBox(
+              height: 15,
+            ),
+            Row(
               children: [
                 DropdownButton(
                   value: _selectedPriority,
@@ -74,22 +80,23 @@ class _AddTodoState extends State<AddTodo> {
                 ),
                 const Spacer(),
                 ElevatedButton(
-                  onPressed: submitTodoData,
-                  child: const Text('Save'),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                   child: const Text('Cancel'),
                 ),
+                const SizedBox(
+                  width: 10,
+                ),
+                ElevatedButton(
+                  onPressed: submitTodoData,
+                  child: const Text('Save'),
+                ),
               ],
             ),
-          )
-        ],
+            const Spacer(),
+          ],
+        ),
       ),
     );
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo/data/boxes.dart';
 import 'package:todo/data/todo.dart';
 import 'package:todo/widgets/add_todo.dart';
-import 'package:todo/widgets/todo_tile.dart';
+import 'package:todo/widgets/todo_list.dart';
 
 class TodoScreen extends StatefulWidget {
   const TodoScreen({super.key});
@@ -12,37 +12,58 @@ class TodoScreen extends StatefulWidget {
 }
 
 class _TodoScreenState extends State<TodoScreen> {
-  int length = 0;
+  List<dynamic> highTodo = [];
+  List<dynamic> mediumTodo = [];
+  List<dynamic> lowTodo = [];
+
+  int totalLength = 0;
   int noOfCompleted = 0;
   Iterable completedTodo = [];
 
-  void onChanged(bool? value, int index) {
-    setState(() {
-      Todo todo = boxTodos.getAt(index);
-      todo.isCompleted = !todo.isCompleted;
-      boxTodos.putAt(index, todo);
-    });
+  void onChanged(bool? value, String id) async {
+    final Todo? todo = await boxTodos.get(id);
+
+    if (todo != null) {
+      setState(() {
+        todo.isCompleted = !todo.isCompleted;
+        boxTodos.put(id, todo);
+        completedTodo =
+            boxTodos.values.where((todo) => todo.isCompleted == true);
+        noOfCompleted = completedTodo.length;
+      });
+    }
   }
 
   @override
   void initState() {
     super.initState();
+    loadData();
+  }
+
+  void loadData() {
+    getHighPriority();
+    getMediumPriority();
+    getLowPriority();
+    totalLength = boxTodos.values.length;
+    completedTodo = boxTodos.values.where((todo) => todo.isCompleted == true);
+    noOfCompleted = completedTodo.length;
   }
 
   void saveNewTask(Todo todo) {
     setState(() {
-      boxTodos.put(
-          "key_${todo.task}",
-          Todo(
-              task: todo.task,
-              isCompleted: todo.isCompleted,
-              priority: todo.priority));
+      final Todo localTodo = Todo(
+          task: todo.task,
+          isCompleted: todo.isCompleted,
+          priority: todo.priority);
+      boxTodos.put(localTodo.id, localTodo);
+      loadData();
     });
   }
 
-  void deleteTask(int index) {
+  void deleteTask(String id) {
     setState(() {
-      boxTodos.deleteAt(index);
+      boxTodos.delete(id);
+      loadData();
     });
   }
 
@@ -51,12 +72,25 @@ class _TodoScreenState extends State<TodoScreen> {
     super.dispose();
   }
 
+  void getHighPriority() {
+    highTodo = boxTodos.values
+        .where((todo) => todo.priority == Priority.high)
+        .toList();
+  }
+
+  void getMediumPriority() {
+    mediumTodo = boxTodos.values
+        .where((todo) => todo.priority == Priority.medium)
+        .toList();
+  }
+
+  void getLowPriority() {
+    lowTodo =
+        boxTodos.values.where((todo) => todo.priority == Priority.low).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    length = boxTodos.values.length;
-    completedTodo = boxTodos.values.where((todo) => todo.isCompleted == true);
-    noOfCompleted = completedTodo.length;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.yellow[400],
@@ -83,33 +117,64 @@ class _TodoScreenState extends State<TodoScreen> {
                 children: [
                   const SizedBox(height: 16),
                   Text(
-                    '$noOfCompleted out of $length completed',
+                    '$noOfCompleted out of $totalLength completed',
                     style: const TextStyle(
                       fontSize: 20,
                     ),
                   ),
-                  ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: boxTodos.values.length,
-                    itemBuilder: (context, index) {
-                      Todo todo = boxTodos.getAt(index);
-                      return Dismissible(
-                        key: UniqueKey(),
-                        onDismissed: (direction) {
-                          deleteTask(index);
-                        },
-                        child: TodoTile(
-                            task: todo.task,
-                            isCompleted: todo.isCompleted,
-                            priority: todo.priority,
-                            onChanged: (value) => onChanged(value, index)),
-                      );
-                    },
+                  const SizedBox(
+                    height: 8,
                   ),
+                  const Divider(),
+                  const PriorityText(text: "High Priority"),
+                  const SizedBox(height: 4.0),
+                  TodoList(
+                      todoList: highTodo,
+                      deleteTask: deleteTask,
+                      onChanged: onChanged),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  const PriorityText(text: "Medium Priority"),
+                  const SizedBox(height: 8.0),
+                  TodoList(
+                      todoList: mediumTodo,
+                      deleteTask: deleteTask,
+                      onChanged: onChanged),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  const PriorityText(text: "Low Priority"),
+                  const SizedBox(height: 8.0),
+                  TodoList(
+                      todoList: lowTodo,
+                      deleteTask: deleteTask,
+                      onChanged: onChanged),
                 ],
               ),
             ),
+    );
+  }
+}
+
+class PriorityText extends StatelessWidget {
+  final String text;
+  const PriorityText({super.key, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.bottomLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 25),
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
     );
   }
 }
