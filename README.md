@@ -35,5 +35,5 @@ To view the number of completed to-dos out of the total, follow these steps:
 
 Here are some screenshots of the Simple To-Do App interface:
 
-![Adding a New To-Do](./assets/add_todo.png)
-![Marking a To-Do as Completed](./assets/todo_screen.png)
+![Adding a New To-Do](./assets/add_todo.jpg)
+![Marking a To-Do as Completed](./assets/todo_screen.jpg)
